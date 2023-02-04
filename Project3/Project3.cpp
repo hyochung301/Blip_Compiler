@@ -62,9 +62,14 @@ uint32_t utstrlen(const UTString* s) {
  * Update the length of s.
  * Return s with the above changes. */
 UTString* utstrcat(UTString* s, const char* suffix) {
-    strncat(s->string, suffix, (s -> capacity) -(s -> length));//s -> string
-    s -> length += (s->capacity) - (strlen(suffix));
-
+    if (strlen(suffix) >= (s->capacity) - (s->length)) {
+        strncat(s->string, suffix, (s->capacity) - (s->length));//s -> string
+        s->length += (s->capacity) - (strlen(suffix));
+    }
+    else {
+        strncat(s->string, suffix, (s->capacity) - (s->length));//s -> string
+        s->length += (strlen(suffix));
+    }
     return s;
 }
 
@@ -101,12 +106,14 @@ void utstrfree(UTString* self) {
  */
 UTString* utstrrealloc(UTString* s, uint32_t new_capacity) {
     assert(isOurs(s));
-    UTString* temp = (UTString*)malloc(sizeof(UTString)); //create new UTSTring;
-    temp -> capacity = new_capacity;
-    temp -> string = (char*)malloc(sizeof(char)*new_capacity);
-    temp -> length = (new_capacity + 5);
-    //copy string over;
-    strcpy(temp -> string, s->string);
-    free(s);
-    return temp;
+    if (new_capacity > s ->capacity) {
+        UTString *temp = (UTString *) malloc(sizeof(UTString)); //create new UTSTring;
+        temp->capacity = new_capacity;
+        temp->string = (char*)malloc(temp->capacity+5);
+        strcpy(temp -> string, s->string);
+        temp->length = (strlen(temp->string));
+        free(s);
+        return temp;
+    }//copy string over;
+    return s;
 }
