@@ -39,10 +39,7 @@ UTString* utstrdup(const char* src) {
  *  s must be a valid UTString.
  */
 uint32_t utstrlen(const UTString* s) {
-    int ret = 0;
-    ret = strlen(s->string);
-
-    return ret;
+    return NULL;
 }
 
 /*

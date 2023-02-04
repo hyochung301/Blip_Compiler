@@ -41,6 +41,7 @@ void testStage2(void) {
 
     ut_str1 = utstrdup("hello ");
     ut_str1 = utstrrealloc(ut_str1, 20);
+
     utstrcat(ut_str1, c_str1);
     printf("%s\n", ut_str1->string); // slightly more exciting, prints "hello hello world"
     utstrcat(ut_str1, " world");
