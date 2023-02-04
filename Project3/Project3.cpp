@@ -30,8 +30,16 @@ bool isOurs(const UTString* s) {
  * Return a pointer to the UTString.
  */
 UTString* utstrdup(const char* src) {
+    UTString* utstring = (UTString*)malloc(sizeof(UTString));
 
-    return NULL;
+    utstring->length = strlen(src);
+    utstring->capacity = strlen(src);
+    utstring->string = (char*)malloc(strlen(src)+5);
+    strcpy(utstring->string, src);
+
+    CHECK(utstring) = SIGNATURE;
+
+    return utstring;
 }
 
 /*
@@ -39,6 +47,7 @@ UTString* utstrdup(const char* src) {
  *  s must be a valid UTString.
  */
 uint32_t utstrlen(const UTString* s) {
+    assert(isOurs(s));
     int ret = 0;
     ret = strlen(s->string);
 
@@ -53,7 +62,10 @@ uint32_t utstrlen(const UTString* s) {
  * Update the length of s.
  * Return s with the above changes. */
 UTString* utstrcat(UTString* s, const char* suffix) {
-    return NULL;
+    strncat(s->string, suffix, (s -> capacity) -(s -> length));//s -> string
+    s -> length += (s->capacity) - (strlen(suffix));
+
+    return s;
 }
 
 /*
@@ -66,6 +78,8 @@ UTString* utstrcat(UTString* s, const char* suffix) {
  * Return dst with the above changes.
  */
 UTString* utstrcpy(UTString* dst, const char* src) {
+    //assert(isOurs(dst));
+
     return NULL;
 }
 
@@ -73,7 +87,7 @@ UTString* utstrcpy(UTString* dst, const char* src) {
  * Free all memory associated with the given UTString.
  */
 void utstrfree(UTString* self) {
-
+    free(self);
 }
 
 /*
@@ -86,5 +100,13 @@ void utstrfree(UTString* self) {
  * Return s with the above changes.
  */
 UTString* utstrrealloc(UTString* s, uint32_t new_capacity) {
-    return NULL;
+    assert(isOurs(s));
+    UTString* temp = (UTString*)malloc(sizeof(UTString)); //create new UTSTring;
+    temp -> capacity = new_capacity;
+    temp -> string = (char*)malloc(sizeof(char)*new_capacity);
+    temp -> length = (new_capacity + 5);
+    //copy string over;
+    strcpy(temp -> string, s->string);
+    free(s);
+    return temp;
 }
