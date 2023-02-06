@@ -31,19 +31,24 @@ bool isOurs(const UTString* s) {
  */
 UTString* utstrdup(const char* src) {
     UTString* utstring = (UTString*)malloc(sizeof(UTString));
+    int length = 0;
 
-    utstring->length = strlen(src);
-    utstring->capacity = strlen(src);
-    utstring->string = (char*)malloc(strlen(src)+5);
+    while (src[length] != '\0'){
+        length++;
+    }
+    utstring->length = length;
+    utstring->capacity = length;
+    utstring->string = (char*)malloc(length+5);
     //strcpy(utstring->string, src);
     //for loop when we know the length, while loop when we do not.
-    for(int i = 0; i < strlen(src); i++){
+    for(unsigned int i = 0; i < length; i++){
         utstring->string[i] = src[i];
     }
-
+    utstring->string[(length)] = '\0';
     CHECK(utstring) = SIGNATURE;
 
     return utstring;
+
 }
 
 /*
@@ -52,7 +57,7 @@ UTString* utstrdup(const char* src) {
  */
 uint32_t utstrlen(const UTString* s) {
     assert(isOurs(s));
-    int ret = 0;
+    int ret;
 
     //ret = strlen(s->string);
     int i = 0;
@@ -72,27 +77,38 @@ uint32_t utstrlen(const UTString* s) {
  * Update the length of s.
  * Return s with the above changes. */
 UTString* utstrcat(UTString* s, const char* suffix) {
-    if (strlen(suffix) >= (s->capacity) - (s->length)) {//put part of suffix
-        //strncat(s->string, suffix, (s->capacity) - (s->length));//s -> string
-        int i=0;
-        for (i=0; i < ((s->capacity) - (s->length)) ; i++){
-
-            s->string[(s->length)+i] = suffix[i];
-        }
-        s->string[(s->length)+i] = '\0';
-
-        s->length += (s->capacity) - (s->length);
+    assert(isOurs(s));
+    unsigned int i = 0;
+    while ((suffix[i] != 0) && (((s->length)+i) < (s->capacity))){
+        s->string[(s->length)+i] = suffix[i];
+        i++;
     }
-    else {//can put all of suffix
-        //strncat(s->string, suffix, (s->capacity) - (s->length));//s -> string
-        int i=0;
-        for (i=0; i < strlen(suffix) ; i++){
-            s->string[(s->length)+i] = suffix[i];
-            }
-        s->string[(s->length)+i] = '\0';
-        s->length += (strlen(suffix));
-        }
+    s->string[(s->length)+i] = '\0';
+    s->length += i;
     CHECK(s) = SIGNATURE;
+
+
+//    if (strlen(suffix) >= (s->capacity) - (s->length)) {//put part of suffix
+//        //strncat(s->string, suffix, (s->capacity) - (s->length));//s -> string
+//        unsigned int i=0;
+//        for (i=0; i < ((s->capacity) - (s->length)) ; i++){
+//
+//            s->string[(s->length)+i] = suffix[i];
+//        }
+//        s->string[(s->length)+i] = '\0';
+//
+//        s->length += (s->capacity) - (s->length);
+//    }
+//    else {//can put all of suffix
+//        //strncat(s->string, suffix, (s->capacity) - (s->length));//s -> string
+//        unsigned int i=0;
+//        for (i=0; i < strlen(suffix) ; i++){
+//            s->string[(s->length)+i] = suffix[i];
+//            }
+//        s->string[(s->length)+i] = '\0';
+//        s->length += (strlen(suffix));
+//        }
+
     return s;
 }
 
@@ -107,10 +123,13 @@ UTString* utstrcat(UTString* s, const char* suffix) {
  */
 UTString* utstrcpy(UTString* dst, const char* src) {
     assert(isOurs(dst));
-
-    if (strlen(src) >= (dst->capacity)) {//일부분만 배끼기
+    int length = 0;
+    while (src[length] != '\0') {
+        length++;
+    }
+    if (length >= (dst->capacity)) {//copy only part of src
         //strncpy(dst->string, src, (dst->capacity));//dst -> string
-        int i = 0;
+        unsigned int i = 0;
         for (i=0; i < ((dst->capacity) - (dst->length)) ; i++){
 
             dst->string[(dst->length)+i] = src[i];
@@ -121,14 +140,14 @@ UTString* utstrcpy(UTString* dst, const char* src) {
 
 
     }
-    else {//다배끼기
+    else {//cpy all of src
         //strncpy(dst->string, src, strlen(src));//dst -> string
-        int i=0;
+        unsigned int i=0;
         for (i=0; i < ((dst->capacity) - (dst->length)) ; i++){
             dst->string[i] = src[i];
         }
         dst->string[(dst->length)+i] = '\0';
-        dst->length = dst->length + strlen(src);
+        dst->length = dst->length + length;
         CHECK(dst) = SIGNATURE;
     }
     return dst;
@@ -138,6 +157,7 @@ UTString* utstrcpy(UTString* dst, const char* src) {
  * Free all memory associated with the given UTString.
  */
 void utstrfree(UTString* self) {
+    assert(isOurs(self));
     free(self ->string);
     free(self);
 }
@@ -156,13 +176,13 @@ UTString* utstrrealloc(UTString* s, uint32_t new_capacity) {
     if (new_capacity > s ->capacity) {
         UTString *temp = (UTString *) malloc(sizeof(UTString)); //create new UTSTring;
         temp->capacity = new_capacity;
-        temp->string = (char*)malloc(temp->capacity+5);
+        temp->string = (char*)malloc((sizeof(char)*(temp->capacity))+5);
         //strcpy(temp -> string, s->string);
-        for(int i = 0; i < s->length; i++){
+        for(unsigned int i = 0; i < s->length; i++){
             temp->string[i] = s->string[i] ;
         }
-
-        temp->length = (utstrlen(s));
+        temp->string[(s->length)] = '\0';
+        temp->length = s->length;
         CHECK(temp) = SIGNATURE;
         utstrfree(s);
 

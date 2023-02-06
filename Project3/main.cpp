@@ -4,6 +4,34 @@
 #include <string.h> // declares the built-in C string library functions, like strcat
 #include "UTString.h" // declares our new improved String functions, like utstrcat
 
+void testcase(){
+    char p[12];
+    const char* q = "Hello World";
+    UTString* s;
+    UTString* t;
+    unsigned k;
+
+    for (k = 0; k < 12; k += 1) {
+        p[k] = q[k];
+    }
+    s = utstrdup(p);
+
+    printf(0, strcmp(s->string, "Hello World"));
+
+    q = "you goofed!";
+    for (k = 0; k < 12; k += 1) {
+        p[k] = q[k];
+    }
+    printf(0, strcmp(s->string, "Hello World"));
+
+    t = utstrdup(s->string);
+    utstrfree(s);
+
+    printf(0, strcmp(t->string, "Hello World"));
+    utstrfree(t);
+}
+
+
 void testStage1(void) {
     char p[12];
     const char* q = "Hello World";
@@ -95,16 +123,17 @@ void testStage4(void) {
     char p[20] = "Hello World!";
     UTString* utstr1 = utstrdup("Hello World");
     *(uint32_t*)( utstr1->string + utstr1->length + 1 ) = BAD_SIGNATURE;
-    // printf("crashing with utstrlen\n\n\n"); utstrlen(utstr1);
-    // printf("Crashing with utstrcpy\n\n\n"); utstrcpy(utstr1, p);
-    // printf("crashing with utstrcat\n\n\n"); utstrcat(utstr1, p);
+    //printf("crashing with utstrlen\n\n\n"); utstrlen(utstr1);
+    //printf("Crashing with utstrcpy\n\n\n"); utstrcpy(utstr1, p);
+     //printf("crashing with utstrcat\n\n\n"); utstrcat(utstr1, p);
     // printf("crashing with utstrfree\n\n\n"); utstrfree(utstr1);
-    // printf("crashing with utstrrealloc\n\n\n"); utstrrealloc(utstr1, 40);
+     //printf("crashing with utstrrealloc\n\n\n"); utstrrealloc(utstr1, 40);
     free(utstr1->string);
     free(utstr1);
 }
 
 int main(void) {
+    testcase();
     testStage1();
     testStage2();
     testStage3();
