@@ -4,10 +4,10 @@
 #include "MyString.h"
 
 typedef struct Customer {
-	String name;
-	int bottles;
-	int diapers;
-	int rattles;
+    String name;
+    int bottles;
+    int diapers;
+    int rattles;
 } Customer;
 
 
@@ -28,6 +28,6 @@ void processPurchase(void);
 void processSummarize(void);
 
 /* reset the database (inventory, customer info, etc). */
-void reset(void); 
+void reset(void);
 
 #endif /* _Invent_h */

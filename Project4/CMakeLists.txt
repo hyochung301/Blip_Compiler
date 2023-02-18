@@ -3,4 +3,4 @@ project(Project4)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Project4 main.cpp Project4.cpp)
+add_executable(Project4 main.cpp MyString.cpp MyString.h Project4.cpp Invent.h)

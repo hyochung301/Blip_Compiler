@@ -52,6 +52,12 @@ build CMakeFiles/Project4.dir/main.cpp.o: CXX_COMPILER__Project4_Debug /Users/hy
   OBJECT_DIR = CMakeFiles/Project4.dir
   OBJECT_FILE_DIR = CMakeFiles/Project4.dir
 
+build CMakeFiles/Project4.dir/MyString.cpp.o: CXX_COMPILER__Project4_Debug /Users/hyokwonchung/Desktop/ECE312/Prj/SW_Design_Implement_ECE312/Project4/MyString.cpp || cmake_object_order_depends_target_Project4
+  DEP_FILE = CMakeFiles/Project4.dir/MyString.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -fcolor-diagnostics -std=gnu++17
+  OBJECT_DIR = CMakeFiles/Project4.dir
+  OBJECT_FILE_DIR = CMakeFiles/Project4.dir
+
 build CMakeFiles/Project4.dir/Project4.cpp.o: CXX_COMPILER__Project4_Debug /Users/hyokwonchung/Desktop/ECE312/Prj/SW_Design_Implement_ECE312/Project4/Project4.cpp || cmake_object_order_depends_target_Project4
   DEP_FILE = CMakeFiles/Project4.dir/Project4.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -fcolor-diagnostics -std=gnu++17
@@ -66,7 +72,7 @@ build CMakeFiles/Project4.dir/Project4.cpp.o: CXX_COMPILER__Project4_Debug /User
 #############################################
 # Link the executable Project4
 
-build Project4: CXX_EXECUTABLE_LINKER__Project4_Debug CMakeFiles/Project4.dir/main.cpp.o CMakeFiles/Project4.dir/Project4.cpp.o
+build Project4: CXX_EXECUTABLE_LINKER__Project4_Debug CMakeFiles/Project4.dir/main.cpp.o CMakeFiles/Project4.dir/MyString.cpp.o CMakeFiles/Project4.dir/Project4.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk
   OBJECT_DIR = CMakeFiles/Project4.dir
   POST_BUILD = :

@@ -3,8 +3,8 @@
 #define _String_h 1
 
 struct String {
-	int len; // number of chars in the string (does not include the zero)
-	char* ptr; // pointer to an array on the heap (where the chars are stored)
+    int len; // number of chars in the string (does not include the zero)
+    char* ptr; // pointer to an array on the heap (where the chars are stored)
 };
 
 /* two creation functions, the first promotes an ordinary C string to our Strings
@@ -23,9 +23,9 @@ void StringDestroy(String* s); // our cleanup function
 /* display the String s on the standard output console */
 void StringPrint(String* s);
 
-/* MUTATOR: change the String dst so that it is an identical copy of src 
+/* MUTATOR: change the String dst so that it is an identical copy of src
  * dst must already exist (i.e., dst must have been previously created/initialized) */
-void StringReAssign(String* dst, String* src); 
+void StringReAssign(String* dst, String* src);
 
 /* PREDICATE: return true iff s1 represents exactly the same string as s2 */
 bool StringIsEqualTo(String* s1, String* s2);
