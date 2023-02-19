@@ -96,6 +96,7 @@ void processSummarize() {
 void processPurchase() {
     String strholder;
     int numholder;
+    bool vchk = 1;
     String Bottles = StringCreate("Bottles");
     String Rattles = StringCreate("Rattles");
     String Diapers = StringCreate("Diapers");
@@ -104,43 +105,64 @@ void processPurchase() {
     temp.bottles = 0;
     temp.diapers = 0;
     readString(&strholder);
-    if (numholder == 0) { return void();};
+
     temp.name = strholder;
     readString(&strholder); //item type
     readNum(&numholder);
-    if (StringIsEqualTo(&strholder, &Bottles)) {
-        if(mkt_inventory.bottles < numholder){printf("Sorry ");StringPrint(&temp.name); printf(", we only have %d Bottles\n", mkt_inventory.bottles);return void();}
-        mkt_inventory.bottles -= numholder;
-        temp.bottles += numholder;
-    } else if (StringIsEqualTo(&strholder, &Rattles)) {
-        if(mkt_inventory.diapers < numholder){printf("Sorry ");StringPrint(&temp.name); printf(", we only have %d Rattles\n", mkt_inventory.rattles);return void();}
-        mkt_inventory.rattles -= numholder;
-        temp.rattles += numholder;
-    } else if (StringIsEqualTo(&strholder, &Diapers)) {
-        if(mkt_inventory.diapers < numholder){printf("Sorry ");StringPrint(&temp.name); printf(", we only have %d Diapers\n", mkt_inventory.diapers);return void();}
-        mkt_inventory.diapers -= numholder;
-        temp.diapers += numholder;
-    }
-    int i =0;
-    bool match = 0;
-    while(i<num_customers){
-        if (StringIsEqualTo(&customers[i].name,&temp.name)){
-            match = 1;
-            break;
+    if (numholder > 0) {
+        if (StringIsEqualTo(&strholder, &Bottles)) {
+            if (mkt_inventory.bottles < numholder) {
+                printf("Sorry ");
+                StringPrint(&temp.name);
+                printf(", we only have %d Bottles\n", mkt_inventory.bottles);
+                vchk = 0;
+            } else {
+                mkt_inventory.bottles -= numholder;
+                temp.bottles += numholder;
+            }
+        } else if (StringIsEqualTo(&strholder, &Rattles)) {
+            if (mkt_inventory.diapers < numholder) {
+                printf("Sorry ");
+                StringPrint(&temp.name);
+                printf(", we only have %d Rattles\n", mkt_inventory.rattles);
+                vchk = 0;
+            } else {
+                mkt_inventory.rattles -= numholder;
+                temp.rattles += numholder;
+            }
+        } else if (StringIsEqualTo(&strholder, &Diapers)) {
+            if (mkt_inventory.diapers < numholder) {
+                printf("Sorry ");
+                StringPrint(&temp.name);
+                printf(", we only have %d Diapers\n", mkt_inventory.diapers);
+                vchk = 0;
+            } else {
+                mkt_inventory.diapers -= numholder;
+                temp.diapers += numholder;
+            }
         }
-        i++;
-    }
-    if (match == 0 || num_customers == 0){//new customer
-        customers[num_customers].name = temp.name;
-        customers[num_customers].diapers = temp.diapers;
-        customers[num_customers].rattles = temp.rattles;
-        customers[num_customers].bottles = temp.bottles;
-        num_customers++;
-    }
-    else if (match == 1){//existing customer
-        customers[i].diapers += temp.diapers;
-        customers[i].rattles += temp.rattles;
-        customers[i].bottles += temp.bottles;
+        if (vchk == 1) {
+            int i = 0;
+            bool match = 0;
+            while (i < num_customers) {
+                if (StringIsEqualTo(&customers[i].name, &temp.name)) {
+                    match = 1;
+                    break;
+                }
+                i++;
+            }
+            if (match == 0 || num_customers == 0) {//new customer
+                customers[num_customers].name = temp.name;
+                customers[num_customers].diapers = temp.diapers;
+                customers[num_customers].rattles = temp.rattles;
+                customers[num_customers].bottles = temp.bottles;
+                num_customers++;
+            } else if (match == 1) {//existing customer
+                customers[i].diapers += temp.diapers;
+                customers[i].rattles += temp.rattles;
+                customers[i].bottles += temp.bottles;
+            }
+        }
     }
     StringDestroy(&Bottles);
     StringDestroy(&Rattles);
