@@ -94,7 +94,7 @@ void processSummarize() {
 }
 
 void processPurchase() {
-    String strholder;
+    String strholder, strholder2;
     int numholder;
     bool vchk = 1;
     String Bottles = StringCreate("Bottles");
@@ -104,9 +104,9 @@ void processPurchase() {
     temp.rattles = 0;
     temp.bottles = 0;
     temp.diapers = 0;
-    readString(&strholder);
-
-    temp.name = strholder;
+    readString(&strholder2);
+    //StringReAssign(&temp.name, &strholder2);
+    temp.name = strholder2;
     readString(&strholder); //item type
     readNum(&numholder);
     if (numholder > 0) {
@@ -144,7 +144,7 @@ void processPurchase() {
         if (vchk == 1) {
             int i = 0;
             bool match = 0;
-            while (i < num_customers) {
+            while (i <= num_customers) {
                 if (StringIsEqualTo(&customers[i].name, &temp.name)) {
                     match = 1;
                     break;
@@ -152,7 +152,7 @@ void processPurchase() {
                 i++;
             }
             if (match == 0 || num_customers == 0) {//new customer
-                customers[num_customers].name = temp.name;
+                StringReAssign(&customers[num_customers].name, &temp.name );
                 customers[num_customers].diapers = temp.diapers;
                 customers[num_customers].rattles = temp.rattles;
                 customers[num_customers].bottles = temp.bottles;
@@ -168,6 +168,8 @@ void processPurchase() {
     StringDestroy(&Rattles);
     StringDestroy(&Diapers);
     StringDestroy(&strholder);
+    StringDestroy(&strholder2);
+
 }
 
 
