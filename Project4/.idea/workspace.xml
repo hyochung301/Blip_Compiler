@@ -92,7 +92,10 @@
       <workItem from="1676751520629" duration="431000" />
       <workItem from="1676752012649" duration="9741000" />
       <workItem from="1676762194715" duration="5320000" />
-      <workItem from="1676775908326" duration="12048000" />
+      <workItem from="1676775908326" duration="13043000" />
+      <workItem from="1676865057375" duration="1366000" />
+      <workItem from="1676868146263" duration="4560000" />
+      <workItem from="1676914542793" duration="5594000" />
     </task>
     <servers />
   </component>
@@ -103,14 +106,14 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main.cpp</url>
-          <line>66</line>
-          <option name="timeStamp" value="8" />
+          <url>file://$PROJECT_DIR$/Project4.cpp</url>
+          <line>118</line>
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/Project4.cpp</url>
-          <line>39</line>
-          <option name="timeStamp" value="20" />
+          <line>157</line>
+          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -122,6 +125,7 @@
         <watch expression="temp" />
         <watch expression="customers[num_customers]" />
         <watch expression="customers[i]" />
+        <watch expression="strholder2" />
       </configuration>
     </watches-manager>
   </component>

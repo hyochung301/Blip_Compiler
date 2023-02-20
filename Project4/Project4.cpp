@@ -13,6 +13,7 @@
 Customer customers[MAX_CUSTOMERS];
 int num_customers = 0;
 Customer mkt_inventory;
+//String strholder2;
 
 
 /* you'll probably need several more global variables */
@@ -26,13 +27,17 @@ void reset(void) {
     mkt_inventory.rattles = 0;
     int i = 0;
     while (i < num_customers){
-        customers[i].name.ptr = NULL;
-        customers[i].name.len = 0;
+        StringDestroy(&customers[i].name);
+        //customers[i].name.ptr = NULL;
+        //customers[i].name.len = 0;
         customers[i].rattles = 0;
         customers[i].bottles = 0;
         customers[i].diapers = 0;
         i++;
     }
+    //strholder2.ptr = NULL;
+    //strholder2.len = 0;
+
     num_customers = 0;
 }
 
@@ -105,15 +110,13 @@ void processPurchase() {
     temp.bottles = 0;
     temp.diapers = 0;
     readString(&strholder2);
-    //StringReAssign(&temp.name, &strholder2);
-    temp.name = strholder2;
     readString(&strholder); //item type
     readNum(&numholder);
     if (numholder > 0) {
         if (StringIsEqualTo(&strholder, &Bottles)) {
             if (mkt_inventory.bottles < numholder) {
                 printf("Sorry ");
-                StringPrint(&temp.name);
+                StringPrint(&strholder2);
                 printf(", we only have %d Bottles\n", mkt_inventory.bottles);
                 vchk = 0;
             } else {
@@ -123,7 +126,7 @@ void processPurchase() {
         } else if (StringIsEqualTo(&strholder, &Rattles)) {
             if (mkt_inventory.diapers < numholder) {
                 printf("Sorry ");
-                StringPrint(&temp.name);
+                StringPrint(&strholder2);
                 printf(", we only have %d Rattles\n", mkt_inventory.rattles);
                 vchk = 0;
             } else {
@@ -133,7 +136,7 @@ void processPurchase() {
         } else if (StringIsEqualTo(&strholder, &Diapers)) {
             if (mkt_inventory.diapers < numholder) {
                 printf("Sorry ");
-                StringPrint(&temp.name);
+                StringPrint(&strholder2);
                 printf(", we only have %d Diapers\n", mkt_inventory.diapers);
                 vchk = 0;
             } else {
@@ -144,15 +147,17 @@ void processPurchase() {
         if (vchk == 1) {
             int i = 0;
             bool match = 0;
-            while (i <= num_customers) {
-                if (StringIsEqualTo(&customers[i].name, &temp.name)) {
+            while (i < num_customers) {
+                if (StringIsEqualTo(&customers[i].name, &strholder2)) {
                     match = 1;
                     break;
                 }
                 i++;
             }
             if (match == 0 || num_customers == 0) {//new customer
-                StringReAssign(&customers[num_customers].name, &temp.name );
+                //StringReAssign( &customers[num_customers].name, &strholder2);
+                customers[num_customers].name = StringDup(&strholder2);
+                //customers[num_customers].name = strholder2 ;
                 customers[num_customers].diapers = temp.diapers;
                 customers[num_customers].rattles = temp.rattles;
                 customers[num_customers].bottles = temp.bottles;
@@ -169,7 +174,6 @@ void processPurchase() {
     StringDestroy(&Diapers);
     StringDestroy(&strholder);
     StringDestroy(&strholder2);
-
 }
 
 
