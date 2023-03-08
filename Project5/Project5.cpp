@@ -29,7 +29,23 @@
  * the amount of storage available in the elements[] array is equal to length
  */
 
+int binarySearch(int arr[], int l, int r, int x)
+{
+    if (r >= l) {
+        int mid = l + (r - l) / 2;
 
+
+        if (arr[mid] == x)
+            return mid;
+
+
+        if (arr[mid] > x)
+            return binarySearch(arr, l, mid - 1, x);
+
+        return binarySearch(arr, mid + 1, r, x);
+    }
+    return -1;
+}
 
 /* done for you already */
 void destroySet(Set* self) {
@@ -68,15 +84,46 @@ void assignSet(Set* self, const Set* other) {
 
 /* return true if x is an element of self */
 bool isMemberSet(const Set* self, int x) {
+    int n = self->len;
+    int ret = binarySearch(self->elements, 0, n-1, x);
+    if (ret == -1) return false;
+    else return true;
 }
 
 /*
  * add x as a new member to this set.
  * If x is already a member, then self should not be changed
- * Be sure to restore the design invariant property that elemnts[] remains sorted
+ * Be sure to restore the design invariant property that elements[] remains sorted
  * (yes, you can assume it is sorted when the function is called, that's what an invariant is all about)
  */
 void insertSet(Set* self, int x) {
+    int n = self->len;
+    int idx=0;
+    if (n == 0){createSingletonSet(self, x);return;} //new set, return new
+    if (self->elements[n-1] < x){idx = n;}//if last element is smaller than the x,
+    else {
+        for (idx = 0; idx<n; idx++){
+            if (self->elements[idx] == x) {
+                return;     //if item is found, skip
+            }
+            else if (self->elements[idx] > x){//if item is smaller, find the pointer
+                break;
+            }
+//        else if (self->elements[idx] > x){
+//            break; //if item is bigger, go to next
+//        }
+        }
+    }
+
+    (self->len)++;; // increase the size
+    self->elements  = (int*)realloc(self->elements, (self->len)*(sizeof(int))); //increase the size
+    if (idx != ((self->len)-1)){
+        for (int i = (self->len)-1 ; i >= idx; i--){
+            self->elements[i] = self->elements[i - 1]; //shift elements
+        }
+    }
+    self->elements[idx] = x;
+
 }
 
 
@@ -91,6 +138,15 @@ void insertSet(Set* self, int x) {
  * is almost definitely NOT worth the trouble
  */
 void removeSet(Set* self, int x) {
+    int n = self->len;
+    int i = 0;
+    if(self->elements[n-1] == x) {n--;}
+    int idx = binarySearch(self->elements, 0, n-1, x);
+    if (idx == -1)return;
+    for (i = idx+1; i <= n; i++){
+        self->elements[i-1] = self->elements[i];
+    }
+    (self->len)--;
 }
 
 /* done for you already */
@@ -115,10 +171,33 @@ void displaySet(const Set* self) {
 
 /* return true if self and other have exactly the same elements */
 bool isEqualToSet(const Set* self, const Set* other) {
+    int n = self->len;
+    int n2 = other->len;
+    if (n != n2) return false;
+
+    for (int i = 0; i < n; i++) {
+        if (self->elements[i] != other->elements[i]) {
+            return false;
+        }
+        return true;
+    }
 }
 
 /* return true if every element of self is also an element of other */
 bool isSubsetOf(const Set* self, const Set* other) {
+    int n = self->len;
+    int n2 = other->len;
+    if (n > n2) return false;
+    int idx2, i;
+    idx2 = i= 0;
+    while (idx2 < n2){
+        if (self->elements[i] == other->elements[i]) {
+            i++;
+        }
+        idx2++;
+        if (i == n){return false;} // reached the end of self
+    }
+    return true;
 }
 
 /* done for you */
@@ -132,6 +211,7 @@ void intersectFromSet(Set* self, const Set* other) {
 
 /* remove all elements from self that are also elements of other */
 void subtractFromSet(Set* self, const Set* other) {
+
 }
 
 /* add all elements of other to self (obviously, without creating duplicate elements) */
