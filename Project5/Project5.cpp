@@ -179,9 +179,10 @@ bool isEqualToSet(const Set* self, const Set* other) {
         if (self->elements[i] != other->elements[i]) {
             return false;
         }
-        return true;
     }
+        return true;
 }
+
 
 /* return true if every element of self is also an element of other */
 bool isSubsetOf(const Set* self, const Set* other) {
@@ -207,11 +208,66 @@ bool isEmptySet(const Set* self) {
 
 /* remove all elements from self that are not also elements of other */
 void intersectFromSet(Set* self, const Set* other) {
+    int n = self->len;
+    int n2 = other->len;
+    int idx2, i;
+    idx2 = i = 0;
+    bool leftover = false;
+
+
+
+    while(i<n){//if self ends earlier, break out of the love
+        if(idx2 == n2){leftover = true; break;}
+        if(self->elements[i] == other->elements[idx2]){//same, increment both i++, idx2++;
+            i++; idx2++;
+        }
+        else if (self->elements[i] < other->elements[idx2]){//self[i] < other[idx2].
+            //delete self[i]
+            i++;//increment i
+        }
+        else if (self->elements[i] > other->elements[idx2]){//self [i]> other[idx2]
+            idx2++;//increment idx2
+        }
+        //if other ends earlier, needs to erase everything left over.
+    }
+    if (leftover == true){
+        int h = n-(i+1); //how many is left over
+        self->len = self->len-h;
+        //realloc(subtract however many is left over.)
+        realloc(self,sizeof(int)*(self->len));
+    }
 }
 
 /* remove all elements from self that are also elements of other */
 void subtractFromSet(Set* self, const Set* other) {
+    int n = self->len;
+    int n2 = other->len;
+    int idx2, i;
+    idx2 = i = 0;
+    bool leftover = false;
 
+
+
+    while(i<n){//if self ends earlier, break out of the love
+        if(idx2 == n2){leftover = true; break;}
+        if(self->elements[i] == other->elements[idx2]){//same, increment both i++, idx2++;
+            i++; idx2++;
+        }
+        else if (self->elements[i] < other->elements[idx2]){//self[i] < other[idx2].
+            //delete self[i]
+            i++;//increment i
+        }
+        else if (self->elements[i] > other->elements[idx2]){//self [i]> other[idx2]
+            idx2++;//increment idx2
+        }
+        //if other ends earlier, needs to erase everything left over.
+    }
+    if (leftover == true){
+        int h = n-(i+1); //how many is left over
+        self->len = self->len-h;
+        //realloc(subtract however many is left over.)
+        realloc(self,sizeof(int)*(self->len));
+    }
 }
 
 /* add all elements of other to self (obviously, without creating duplicate elements) */
