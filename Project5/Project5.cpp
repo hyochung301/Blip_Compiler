@@ -139,8 +139,9 @@ void insertSet(Set* self, int x) {
  */
 void removeSet(Set* self, int x) {
     int n = self->len;
+    if (n == 0){return;}
     int i = 0;
-    if(self->elements[n-1] == x) {n--;}
+    if(self->elements[n-1] == x) {(self->len)--;return;}
     int idx = binarySearch(self->elements, 0, n-1, x);
     if (idx == -1)return;
     for (i = idx+1; i <= n; i++){
@@ -244,7 +245,10 @@ void subtractFromSet(Set* self, const Set* other) {
     int idx2, i;
     idx2 = i = 0;
 
-    while(i<n){//if self ends earlier, break out of the love
+    while(i<n){//if self ends earlier, break out of the loop
+        if (idx2 == 99){
+            printf("99");
+        }
         if(idx2 == n2){break;} // gone through all self.
         if(self->elements[i] == other->elements[idx2]){//same, increment both i++, idx2++;
             removeSet(self, self->elements[i]);//delete self[i]

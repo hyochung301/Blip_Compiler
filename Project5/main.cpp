@@ -18,6 +18,7 @@ void algebraicTests(void);
 void testTime(void);
 
 int main (void) {
+
     visualTests();
     equalityTests();
     specialCaseTests();
@@ -53,9 +54,15 @@ void visualTests() {
     createEmptySet(&s);
     showOutput("The set constructed with the default constructor: ", &s);
 
+
     for (i = 0; i < 10; i += 1) {
         insertSet(&s, i);
     }
+
+    //testing remove set
+    //removeSet(&s, 2);
+    //showOutput("The set constructed with the default constructor: ", &s);
+
     showOutput("The set should be {0, ..., 9}:  ", &s);
 
     // test Insert() and Contains() with '<<'
