@@ -217,12 +217,12 @@ void intersectFromSet(Set* self, const Set* other) {
 
 
     while(i<n){//if self ends earlier, break out of the love
-        if(idx2 == n2){leftover = true; break;}
+        if(idx2 == n2){leftover = true; break;}//if other ends earlier, there are left over
         if(self->elements[i] == other->elements[idx2]){//same, increment both i++, idx2++;
             i++; idx2++;
         }
         else if (self->elements[i] < other->elements[idx2]){//self[i] < other[idx2].
-            //delete self[i]
+            removeSet(self, self->elements[i]);//delete self[i]
             i++;//increment i
         }
         else if (self->elements[i] > other->elements[idx2]){//self [i]> other[idx2]
@@ -233,8 +233,7 @@ void intersectFromSet(Set* self, const Set* other) {
     if (leftover == true){
         int h = n-(i+1); //how many is left over
         self->len = self->len-h;
-        //realloc(subtract however many is left over.)
-        realloc(self,sizeof(int)*(self->len));
+        //realloc(self,sizeof(int)*(self->len)); //realloc(subtract however many is left over.)
     }
 }
 
@@ -244,32 +243,44 @@ void subtractFromSet(Set* self, const Set* other) {
     int n2 = other->len;
     int idx2, i;
     idx2 = i = 0;
-    bool leftover = false;
-
-
 
     while(i<n){//if self ends earlier, break out of the love
-        if(idx2 == n2){leftover = true; break;}
+        if(idx2 == n2){break;} // gone through all self.
         if(self->elements[i] == other->elements[idx2]){//same, increment both i++, idx2++;
-            i++; idx2++;
+            removeSet(self, self->elements[i]);//delete self[i]
+            idx2++;
         }
         else if (self->elements[i] < other->elements[idx2]){//self[i] < other[idx2].
-            //delete self[i]
+
             i++;//increment i
         }
         else if (self->elements[i] > other->elements[idx2]){//self [i]> other[idx2]
             idx2++;//increment idx2
         }
-        //if other ends earlier, needs to erase everything left over.
     }
-    if (leftover == true){
-        int h = n-(i+1); //how many is left over
-        self->len = self->len-h;
-        //realloc(subtract however many is left over.)
-        realloc(self,sizeof(int)*(self->len));
-    }
+
+
 }
 
 /* add all elements of other to self (obviously, without creating duplicate elements) */
 void unionInSet(Set* self, const Set* other) {
+    int n = self->len;
+    int n2 = other->len;
+    int idx2, i;
+    idx2 = i = 0;
+
+    while(i<n){//if self ends earlier, break out of the love
+        if(idx2 == n2){break;} // gone through all self.
+        if(self->elements[i] == other->elements[idx2]){//same, increment both i++, idx2++;
+            i++; idx2++;
+        }
+        else if (self->elements[i] < other->elements[idx2]){//self[i] < other[idx2].
+            insertSet(self, other->elements[idx2]);//insert
+
+            i++;//increment i
+        }
+        else if (self->elements[i] > other->elements[idx2]){//self [i]> other[idx2]
+            idx2++;//increment idx2
+        }
+    }
 }
