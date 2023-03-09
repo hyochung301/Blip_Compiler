@@ -98,9 +98,9 @@ bool isMemberSet(const Set* self, int x) {
  */
 void insertSet(Set* self, int x) {
     int n = self->len;
-    int idx=0;
+    int idx;
     if (n == 0){createSingletonSet(self, x);return;} //new set, return new
-    if (self->elements[n-1] < x){idx = n;}//if last element is smaller than the x,
+    else if (self->elements[n-1] < x){idx = n;}//if last element is smaller than the x,
     else {
         for (idx = 0; idx<n; idx++){
             if (self->elements[idx] == x) {
@@ -210,24 +210,23 @@ bool isEmptySet(const Set* self) {
     return self->len == 0;
 }
 
+/* remove all elements from self that are not also elements of other */
 void intersectFromSet(Set* self, const Set* other) {
-    int i = 0, j = 0;
+    int i = 0, j = 0, k = 0;
     while (i < self->len && j < other->len) {
         if (self->elements[i] < other->elements[j]) {
-            removeSet(self, self->elements[i]);
+            i++;
         } else if (self->elements[i] > other->elements[j]) {
             j++;
-            continue;
         } else {
+            self->elements[k++] = self->elements[i];
             i++;
             j++;
         }
     }
-    // Remove any remaining elements from self that are not in other
-    while (i < self->len) {
-        removeSet(self, self->elements[i]);
-    }
+    self->len = k;
 }
+
 ///* remove all elements from self that are not also elements of other */
 //void intersectFromSet(Set* self, const Set* other) {
 //    int n = self->len;
@@ -257,64 +256,139 @@ void intersectFromSet(Set* self, const Set* other) {
 //    }
 //}
 
-/* remove all elements from self that are also elements of other */
+//void subtractFromSet(Set* self, const Set* other) {
+//    int n = self->len;
+//    int n2 = other->len;
+//    int idx2, i;
+//    idx2 = i = 0;
+//
+//    while(i<n){//if self ends earlier, break out of the lo op
+////        if (idx2 == 99){
+////            printf("99");
+////        }
+//        if(idx2 == n2){break;} // gone through all self.
+//        if(self->elements[i] == other->elements[idx2]){//same, increment both i++, idx2++;
+//            removeSet(self, self->elements[i]);//delete self[i]
+//            idx2++;
+//        }
+//        else if (self->elements[i] < other->elements[idx2]){//self[i] < other[idx2].
+//
+//            i++;//increment i
+//        }
+//        else if (self->elements[i] > other->elements[idx2]){//self [i]> other[idx2]
+//            idx2++;//increment idx2
+//        }
+//    }
+//}
 void subtractFromSet(Set* self, const Set* other) {
     int n = self->len;
     int n2 = other->len;
-    int idx2, i;
-    idx2 = i = 0;
+    int i = 0;
+    int j = 0;
+    int k = 0;
 
-    while(i<n){//if self ends earlier, break out of the loop
-//        if (idx2 == 99){
-//            printf("99");
-//        }
-        if(idx2 == n2){break;} // gone through all self.
-        if(self->elements[i] == other->elements[idx2]){//same, increment both i++, idx2++;
-            removeSet(self, self->elements[i]);//delete self[i]
-            idx2++;
-        }
-        else if (self->elements[i] < other->elements[idx2]){//self[i] < other[idx2].
+    // Allocate a new array to hold the result
+    int* result = (int*)malloc(n * sizeof(int));
 
-            i++;//increment i
-        }
-        else if (self->elements[i] > other->elements[idx2]){//self [i]> other[idx2]
-            idx2++;//increment idx2
+    // Compare the elements of both sets and copy non-common elements to the result array
+    while (i < n && j < n2) {
+        if (self->elements[i] == other->elements[j]) {
+            i++;
+            j++;
+        } else if (self->elements[i] < other->elements[j]) {
+            result[k] = self->elements[i];
+            k++;
+            i++;
+        } else {
+            j++;
         }
     }
 
+    // Copy remaining elements from self to the result array
+    while (i < n) {
+        result[k] = self->elements[i];
+        k++;
+        i++;
+    }
 
+    // Replace the self array with the result array and update self length to new size
+    free(self->elements);
+    self->elements = result;
+    self->len = k;
 }
 
-/* add all elements of other to self (obviously, without creating duplicate elements) */
+
+///* add all elements of other to self (obviously, without creating duplicate elements) */
+//void unionInSet(Set* self, const Set* other) {
+//    int n = self->len;
+//    int n2 = other->len;
+//    int idx2, i;
+//    idx2 = i = 0;
+//    if (self->len == 0) { // self is empty
+//        // copy elements from other to self
+//        for (int i = 0; i < other->len; i++) {
+//            insertSet(self, other->elements[i]);
+//        }
+//        return;
+//    }
+//
+//    while(i<n){//if self ends earlier, break out of the love
+//        if(idx2 == n2){break;} // gone through all self.
+//        if(self->elements[i] == other->elements[idx2]){//same, increment both i++, idx2++;
+//            i++; idx2++;
+//        }
+//        else if (self->elements[i] > other->elements[idx2]){//self[i] < other[idx2].
+//            insertSet(self, other->elements[idx2]);//insert
+//
+//            idx2++;//increment i
+//        }
+//        else if (self->elements[i] < other->elements[idx2]){//self [i]> other[idx2]
+//            i++;//increment idx2
+//        }
+//    }
+//    while (idx2 < n2) {//insert any remaining elements in other
+//        insertSet(self, other->elements[idx2]);
+//        idx2++;
+//    }
+//}
 void unionInSet(Set* self, const Set* other) {
     int n = self->len;
     int n2 = other->len;
-    int idx2, i;
-    idx2 = i = 0;
-    if (self->len == 0) { // self is empty
-        // copy elements from other to self
-        for (int i = 0; i < other->len; i++) {
-            insertSet(self, other->elements[i]);
+    int i = 0, j = 0, k = 0;
+    int* new_elements = (int*) malloc(sizeof(int) * (n+n2));
+
+    while (i < n && j < n2) {
+        if (self->elements[i] < other->elements[j]) {
+            new_elements[k] = self->elements[i];
+            k++;
+            i++;
+        } else if (self->elements[i] > other->elements[j]) {
+            new_elements[k] = other->elements[j];
+            k++;
+            j++;
+        } else {
+            new_elements[k] = self->elements[i];
+            k++;
+            i++;
+            j++;
         }
-        return;
     }
 
-    while(i<n){//if self ends earlier, break out of the love
-        if(idx2 == n2){break;} // gone through all self.
-        if(self->elements[i] == other->elements[idx2]){//same, increment both i++, idx2++;
-            i++; idx2++;
-        }
-        else if (self->elements[i] > other->elements[idx2]){//self[i] < other[idx2].
-            insertSet(self, other->elements[idx2]);//insert
+    while (i < n) {
+        new_elements[k] = self->elements[i];
+        k++;
+        i++;
+    }
 
-            idx2++;//increment i
-        }
-        else if (self->elements[i] < other->elements[idx2]){//self [i]> other[idx2]
-            i++;//increment idx2
-        }
+    while (j < n2) {
+        new_elements[k] = other->elements[j];
+        k++;
+        j++;
     }
-    while (idx2 < n2) {//insert any remaining elements in other
-        insertSet(self, other->elements[idx2]);
-        idx2++;
-    }
+
+    free(self->elements);
+    self->elements = new_elements;
+    self->len = k;
 }
+
+
