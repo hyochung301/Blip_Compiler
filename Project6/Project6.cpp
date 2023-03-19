@@ -10,7 +10,7 @@
 /* return the smallest of the elements in array x[]
  * there are n elements in x[] (x[0].. x[n-1])
  */
-int minIt(int x[], int n) {
+int minIt(int x[], int n) { //use loop
     return 0;
 }
 
@@ -20,7 +20,14 @@ int minIt(int x[], int n) {
  * use an "n-1" type of decomposition
  */
 int minRec1(int x[], int n) {
-    return 0;
+    if (n == 1) {
+        return x[0];
+    }
+    int min = minRec1(x+1, n-1);
+    if (x[0] < min) {
+        return x[0];
+    }
+    else return min;
 }
 
 /*
@@ -31,7 +38,15 @@ int minRec1(int x[], int n) {
  * use an "n / 2" type of decomposition
  */
 int minRec2(int x[], int n) {
-    return 0;
+    if (n == 1) {
+        return x[0];
+    } else if (n == 2) {
+        return (x[0] < x[1]) ? x[0] : x[1];
+    } else {
+        int left_min = minRec2(x, n / 2); // Recursively find the smallest element in the left half of the array
+        int right_min = minRec2(x + n / 2, n - n / 2); // Recursively find the smallest element in the right half of the array
+        return (left_min < right_min) ? left_min : right_min; // Return the smaller of the two smallest elements
+    }
 }
 
 
@@ -64,7 +79,26 @@ double sqrtIt(double x, double low_guess, double high_guess) {
  * accuracy.
  */
 double sqrtRec(double x, double low_guess, double high_guess) {
-    return 0;
+    double eps = 0.000000000000001; // tolerance for accuracy
+    double mid_guess = (low_guess + high_guess) / 2;
+    double diff = mid_guess * mid_guess - x;
+
+    if (diff > 0 && diff < eps) {
+        // midpoint is within tolerance of true square root
+        return mid_guess;
+    } else if (diff < 0 && -diff < eps) {
+        // midpoint is within tolerance of true square root
+        return mid_guess;
+    } else if (low_guess == high_guess) {
+        // interval is too small to divide further
+        return mid_guess;
+    } else if (mid_guess * mid_guess < x) {
+        // midpoint is too small, update low_guess
+        return sqrtRec(x, mid_guess, high_guess);
+    } else {
+        // midpoint is too large, update high_guess
+        return sqrtRec(x, low_guess, mid_guess);
+    }
 }
 
 
@@ -83,7 +117,26 @@ double sqrtRec(double x, double low_guess, double high_guess) {
  */
 
 int strCompare(char* str1, char* str2) {
-    return 0;
+    if (*str1 == '\0' && *str2 == '\0') {
+        return 0;
+    }
+    // If only one string is empty, the non-empty string is greater
+    if (*str1 == '\0') {
+        return -1;
+    }
+    if (*str2 == '\0') {
+        return 1;
+    }
+    // If the first character of str1 is less than str2, str1 is less
+    if (*str1 < *str2) {
+        return -1;
+    }
+    // If the first character of str1 is greater than str2, str1 is greater
+    if (*str1 > *str2) {
+        return 1;
+    }
+    // Otherwise, the first characters are equal, so compare the rest of the strings
+    return strCompare(str1 + 1, str2 + 1);
 }
 
 /*
@@ -109,7 +162,55 @@ int whatLetter(char c) {
  * once again, you can only use recursion, no loops
  */
 int strCompare2(char* str1, char* str2) {
-    return 0;
+    if (*str1 == '\0' && *str2 == '\0') {
+        return 0; // both strings are empty and therefore equal
+    } else if (*str1 == '\0') {
+        if ((*str2 >= 'a' && *str2 <= 'z') || (*str2 >= 'A' && *str2 <= 'Z')) {
+            return -1; // str1 is shorter than str2 and str2 still has alphabet characters left
+        } else {
+            return strCompare2(str1, str2+1); // str2 has non-alphabet characters left, skip them and compare the rest of the strings recursively
+        }
+    } else if (*str2 == '\0') {
+        if ((*str1 >= 'a' && *str1 <= 'z') || (*str1 >= 'A' && *str1 <= 'Z')) {
+            return 1; // str2 is shorter than str1 and str1 still has alphabet characters left
+        } else {
+            return strCompare2(str1+1, str2); // str1 has non-alphabet characters left, skip them and compare the rest of the strings recursively
+        }
+    } else {
+        // check if the first character of both strings are equal
+        if (*str1 == *str2) {
+            return strCompare2(str1+1, str2+1); // compare the rest of the strings recursively
+        } else {
+            // check if the first character of str1 is a letter
+            if ((*str1 >= 'a' && *str1 <= 'z') || (*str1 >= 'A' && *str1 <= 'Z')) {
+                // check if the first character of str2 is a letter
+                if ((*str2 >= 'a' && *str2 <= 'z') || (*str2 >= 'A' && *str2 <= 'Z')) {
+                    int c1 = *str1;
+                    int c2 = *str2;
+                    // check if the first character of str1 is capitalized
+                    if (c1 >= 'A' && c1 <= 'Z') {
+                        c1 += 32; // convert to lowercase
+                    }
+                    // check if the first character of str2 is capitalized
+                    if (c2 >= 'A' && c2 <= 'Z') {
+                        c2 += 32; // convert to lowercase
+                    }
+                    // compare the lowercase letters recursively
+                    if (c1 == c2) {
+                        return strCompare2(str1+1, str2+1); // compare the rest of the strings recursively
+                    } else if (c1 < c2) {
+                        return -1; // str1 is less than str2
+                    } else {
+                        return 1; // str1 is greater than str2
+                    }
+                } else {
+                    return strCompare2(str1, str2+1); // str2 has a non-letter character, skip it and compare the rest recursively
+                }
+            } else {
+                return strCompare2(str1+1, str2); // str1 has a non-letter character, skip it and compare the rest recursively
+            }
+        }
+    }
 }
 
 /*
@@ -170,8 +271,39 @@ int strCompare2(char* str1, char* str2) {
  */
 
 int solveMazeRec(int row, int col) {
+    // Check if the current position is the exit point
+    if (row == MATRIX_SIZE - 1) {
+        return 1;
+    }
+
+    // Check if the current position is valid to move
+    if (row < 0 || row >= MATRIX_SIZE || col < 0 || col >= MATRIX_SIZE || maze[row][col] == 1) {
+        return 0;
+    }
+
+    // Mark the current position as visited
+    maze[row][col] = 2;
+
+    // Recursively check all neighboring positions in a clockwise order
+    if (solveMazeRec(row, col + 1) == 1) {  // right
+        return 1;
+    }
+    if (solveMazeRec(row + 1, col) == 1) {  // down
+        return 1;
+    }
+    if (solveMazeRec(row, col - 1) == 1) {  // left
+        return 1;
+    }
+    if (solveMazeRec(row - 1, col) == 1) {  // up
+        return 1;
+    }
+
+    // Unmark the current position
+    maze[row][col] = 0;
+
     return 0;
 }
+
 
 
 /**********************
