@@ -445,12 +445,12 @@ int turnLeft(int dir) {
  * You indicate "bread crumbs" by setting the square equal to "2"
  */
 void solveMazeIt(int row, int col) {
-    int dir = 2; // 0 is up, 1 is right, 2 is down, 3 is left.
-    maze[row][col] = 2; // drop a bread crumb in the starting square
-    while (row < MATRIX_SIZE - 1) { // the exit is the only open square
-        // in the last row
-
-        /* the rest of this loop is yours */
-
-    }
+//    int dir = 2; // 0 is up, 1 is right, 2 is down, 3 is left.
+//    maze[row][col] = 2; // drop a bread crumb in the starting square
+//    while (row < MATRIX_SIZE - 1) { // the exit is the only open square
+//        // in the last row
+//
+//        /* the rest of this loop is yours */
+//
+//    }
 }
