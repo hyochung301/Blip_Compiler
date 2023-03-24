@@ -1,6 +1,10 @@
-/*
- * Copy the contents of header.txt (filled out) and paste here
- */
+// Recursion <Project6.cpp>
+// EE 312 Project 6 submission by
+// Hyokwon (Sam) Chung
+// hc27426
+// Slip days used: <0>
+// Summer 2022
+
 
 #include <stdio.h>
 #include <stdint.h>
