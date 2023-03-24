@@ -79,14 +79,14 @@ double sqrtIt(double x, double low_guess, double high_guess) {
  * accuracy.
  */
 double sqrtRec(double x, double low_guess, double high_guess) {
-    double eps = 0.000000000000001; // tolerance for accuracy
-    double mid_guess = (low_guess + high_guess) / 2;
-    double diff = mid_guess * mid_guess - x;
+    double eps = 0.00000000000001; // tolerance for accuracy
+    long double mid_guess = (low_guess + high_guess)/ 2;
+    long double diff = mid_guess * mid_guess - x;
 
-    if (diff > 0 && diff < eps) {
+    if (diff >= 0 && diff <= eps) {
         // midpoint is within tolerance of true square root
         return mid_guess;
-    } else if (diff < 0 && -diff < eps) {
+    } else if (diff <= 0 && -diff <= eps) {
         // midpoint is within tolerance of true square root
         return mid_guess;
     } else if (low_guess == high_guess) {
@@ -269,15 +269,42 @@ int strCompare2(char* str1, char* str2) {
  * for full credit, you must pick up all the bread crumbs EXCEPT those
  * along a path to the exit.
  */
+void printMaze1(void) {
+    unsigned r, c;
+    for (r = 0; r < MATRIX_SIZE; r += 1) {
+        for (c = 0; c < MATRIX_SIZE; c += 1) {
+            switch (maze[r][c] ) {
+                case 0:
+                    putchar(' ');
+                    break;
+                case 1:
+                    putchar('#');
+                    break;
+                case 2: // bread crumb
+                    putchar('o');
+                    break;
+                default: // error!
+                    putchar('@');
+                    break;
+            }
+        }
+        putchar('\n');
+    }
+    putchar('\n');
+    putchar('\n');
+}
+
+
 
 int solveMazeRec(int row, int col) {
     // Check if the current position is the exit point
-    if (row == MATRIX_SIZE - 1) {
+
+    if (row == MATRIX_SIZE) {
         return 1;
     }
 
     // Check if the current position is valid to move
-    if (row < 0 || row >= MATRIX_SIZE || col < 0 || col >= MATRIX_SIZE || maze[row][col] == 1) {
+    if (row < 0 || row >= MATRIX_SIZE || col < 0 || col >= MATRIX_SIZE || maze[row][col] == 1 || maze[row][col] == 2) {
         return 0;
     }
 
@@ -285,10 +312,10 @@ int solveMazeRec(int row, int col) {
     maze[row][col] = 2;
 
     // Recursively check all neighboring positions in a clockwise order
-    if (solveMazeRec(row, col + 1) == 1) {  // right
+    if (solveMazeRec(row + 1, col) == 1) {  // down
         return 1;
     }
-    if (solveMazeRec(row + 1, col) == 1) {  // down
+    if (solveMazeRec(row, col + 1) == 1) {  // right
         return 1;
     }
     if (solveMazeRec(row, col - 1) == 1) {  // left
