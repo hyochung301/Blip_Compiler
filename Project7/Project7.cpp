@@ -95,6 +95,19 @@ Customer* findMax(UTString type) {
 
 void processPurchase() {
     // not done, your effort goes here
+    UTString str_item, str_customer;
+    int numholder;
+    readString(str_customer);
+    readNum(numholder);
+    readString(str_item);
+
+    if(*selectInventItem(str_item) < numholder){
+    pass;
+    }
+    selectInventItem(str_customer, str_item) += numholder;
+
+    database[str_customer] += 5
+
 }
 
 void processSummarize() {
