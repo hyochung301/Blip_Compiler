@@ -1,6 +1,10 @@
-/*
- * Copy the contents of header.txt (filled out) and paste here
- */
+// CRM in C++ <filename.cpp>
+// EE 312 Project 7 submission by
+// Hyokwon Chung
+// hc27426
+// Slip days used: <0>
+// Spring 2023
+
 #include <stdio.h>
 #include "UTString.h"
 #include "Customer.h"
@@ -99,4 +103,19 @@ void processSummarize() {
 
 void processInventory() {
     // not done, your effort goes here
+    UTString strholder;
+    int numholder;
+    readString(strholder);
+    readNum(numholder);
+
+
+    if (strholder == "Bottles"){
+        num_bottles = numholder;
+    }
+    else if (strholder == "Rattles"){
+        num_rattles = numholder;
+    }
+    else if (strholder == "Diapers"){
+        num_diapers = numholder;
+    }
 }

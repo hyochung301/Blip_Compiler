@@ -1,6 +1,10 @@
-/*
- * Copy the contents of header.txt (filled out) and paste here
- */
+// CRM in C++ <filename.cpp>
+// EE 312 Project 7 submission by
+// Hyokwon Chung
+// hc27426
+// Slip days used: <0>
+// Spring 2023
+
 #include <iostream>
 #include <cassert>
 #include "UTString.h"
@@ -46,7 +50,33 @@ Customer& CustomerDB::operator[](int k) { // done, please do not edit
 }
 
 Customer& CustomerDB::operator[](UTString name) { // not done, your effort goes here
+    int i = 0;
+    for (int i = 0; i < this->length; i++) {
+        Customer& cus = this->data[i];
+        if (name == cus.name) {
+            return cus; // customer found, return by reference
+        }
+    }
+    //customer not found, add to the list
+    if (this->length == this -> capacity) {//check capacity by comparing length and cap
+        this->capacity = this->capacity * 2;// if capacity is smaller, double the cap
+    }
+
+    Customer temp(name); //add the customer by customer constructor
+    this->data[this->length] = temp;
+    //increase the length
+    this->length += 1;
+    //return by reference
+    return this->data[this->length - 1];
+    ;
 }
 
-bool CustomerDB::isMember(UTString name) { // not done, your effort goes here
+bool CustomerDB::isMember(UTString name) {
+    int i = 0;
+    while (i < this->length){
+        if (name == this->operator[](i).name){
+            return true;
+        }
+        return false;
+    }
 }
