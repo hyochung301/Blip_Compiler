@@ -98,24 +98,73 @@ void processPurchase() {
     UTString str_item, str_customer;
     int numholder;
     readString(str_customer);
-    readNum(numholder);
     readString(str_item);
+    readNum(numholder);
 
-    if(*selectInventItem(str_item) < numholder){
-    pass;
+    if(*selectInventItem(str_item) < numholder){//database[str_customer].name.c_str()
+        printf("Sorry %s, we only have %d %s\n", str_customer.c_str(), *selectInventItem(str_item), str_item.c_str());
+        return;
     }
-    selectInventItem(str_customer, str_item) += numholder;
-
-    database[str_customer] += 5
-
+    *selectInventItem(str_item, database[str_customer]) += numholder; //add purchased num to customer db
+    *selectInventItem(str_item) -= numholder; //subtract from the inventory
 }
 
 void processSummarize() {
-    // not done, your effort goes here
+    printf("There are %d Bottles %d Diapers and %d Rattles in inventory\n", *selectInventItem("Bottles"), *selectInventItem("Diapers"), *selectInventItem("Rattles"));
+    printf("we have had a total of %d different customers\n",database.size());
+
+    int idx,i, max;
+    //bottles
+    idx = max = i = 0; //index for max
+    while (idx < database.size()){
+        if (database[idx].bottles > max){
+            i = idx;
+            max = database[i].bottles;
+        }
+        idx++;
+    }
+    if (max == 0){
+        printf("no one has purchased any Bottles\n");
+    }
+    else if (max != 0){
+        printf("%s has purchased the most Bottles (%d)\n", database[i].name.c_str(), max);
+    }
+
+    //diapers
+    idx = max = i = 0; //index for max
+    while (idx < database.size()){
+        if (database[idx].diapers > max){
+            i = idx;
+            max = database[i].diapers;
+        }
+        idx++;
+    }
+    if (max == 0){
+        printf("no one has purchased any Diapers\n");
+    }
+    else if (max != 0){
+        printf("%s has purchased the most Diapers (%d)\n", database[i].name.c_str(), max);
+    }
+
+    //Rattles
+    idx = max = i = 0; //index for max
+    while (idx < database.size()){
+        if (database[idx].rattles > max){
+            i = idx;
+            max = database[i].rattles;
+        }
+        idx++;
+    }
+    if (max == 0){
+        printf("no one has purchased any Rattles\n");
+    }
+    else if (max != 0){
+        printf("%s has purchased the most Rattles (%d)\n",database[i].name.c_str(), max);
+    }
+
 }
 
 void processInventory() {
-    // not done, your effort goes here
     UTString strholder;
     int numholder;
     readString(strholder);
@@ -123,12 +172,12 @@ void processInventory() {
 
 
     if (strholder == "Bottles"){
-        num_bottles = numholder;
+        num_bottles += numholder;
     }
     else if (strholder == "Rattles"){
-        num_rattles = numholder;
+        num_rattles += numholder;
     }
     else if (strholder == "Diapers"){
-        num_diapers = numholder;
+        num_diapers += numholder;
     }
 }

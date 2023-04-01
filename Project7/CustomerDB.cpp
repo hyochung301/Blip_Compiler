@@ -50,7 +50,6 @@ Customer& CustomerDB::operator[](int k) { // done, please do not edit
 }
 
 Customer& CustomerDB::operator[](UTString name) { // not done, your effort goes here
-    int i = 0;
     for (int i = 0; i < this->length; i++) {
         Customer& cus = this->data[i];
         if (name == cus.name) {
@@ -68,7 +67,6 @@ Customer& CustomerDB::operator[](UTString name) { // not done, your effort goes 
     this->length += 1;
     //return by reference
     return this->data[this->length - 1];
-    ;
 }
 
 bool CustomerDB::isMember(UTString name) {
