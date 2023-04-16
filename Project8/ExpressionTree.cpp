@@ -6,13 +6,13 @@
 
 // Define a struct to represent a node in the binary expression tree
 struct Node {
-    std::string value;
+    string value;
     Node* left;
     Node* right;
 };
 
 // Helper function to create a new node with the given value
-Node* newNode(std::string value) {
+Node* newNode(string value) {
     Node* node = new Node;
     node->value = value;
     node->left = nullptr;
@@ -20,20 +20,32 @@ Node* newNode(std::string value) {
     return node;
 }
 
-// Function to construct a binary expression tree from an input expression
-Node* constructExpressionTree(const std::vector<std::string>& tokens) {
-    std::stack<Node*> nodeStack;
+int execute(const vector<string>& command){
+    return(evaluateExpressionTree(constructExpressionTree(command)));
+}
 
-    for (const std::string& token : tokens) {
+// Function to construct a binary expression tree from an input expression
+Node* constructExpressionTree(const vector<string>& tokens) {
+    stack<Node*> nodeStack;
+
+    for (const string& token : tokens) {
         Node* newNode = ::newNode(token);
 
         // If token is an operator, pop two operands and create a new subtree
-        if (token == "+" || token == "-" || token == "*" || token == "/"||
-            token == "/" || token == "/" || token == "/" || token == "/"||
-            token == "/" || token == "/" || token == "/" || token == "/") {
-            Node* right = nodeStack.top();
+
+        if (token == "!" || token == "~") {
+            Node* operand = nodeStack.top();
             nodeStack.pop();
-            Node* left = nodeStack.top();
+
+            newNode->left = operand;
+        }
+        else if (token == "+" || token == "-" || token == "*" || token == "/"||
+        token == "&&" || token == "||" || token == "<" || token == ">"||
+        token == "==" || token == "!=" || token == "<=" || token == ">="||
+        token == "!" || token == "~") {
+            Node *right = nodeStack.top();
+            nodeStack.pop();
+            Node *left = nodeStack.top();
             nodeStack.pop();
 
             newNode->left = left;
@@ -53,7 +65,7 @@ int evaluateExpressionTree(Node* root) {
     }
 
     if (!root->left && !root->right) {
-        return std::stoi(root->value);
+        return stoi(root->value);
     }
 
     int leftValue = evaluateExpressionTree(root->left);
@@ -85,6 +97,10 @@ int evaluateExpressionTree(Node* root) {
         return leftValue && rightValue;
     } else if (root->value == "||") {
         return leftValue || rightValue;
+    } else if (root->value == "!") {
+        return !rightValue;
+    } else if (root->value == "~") {
+        return ~rightValue;
     } else {
         throw invalid_argument("Invalid operator: " + root->value);
     }

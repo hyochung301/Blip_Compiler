@@ -5,6 +5,7 @@
 #ifndef PROJECT8_PROJECT8_H
 #define PROJECT8_PROJECT8_H
 #include "Parse.h"
+#include "ExpressionTree.h"
 #include <string>
 #include <iostream>
 #include <map>

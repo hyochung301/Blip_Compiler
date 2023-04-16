@@ -9,13 +9,15 @@
 #include <stack>
 using namespace std;
 
-
-struct ExpressionNode {
-    std::string data;
-    std::shared_ptr<ExpressionNode> left;
-    std::shared_ptr<ExpressionNode> right;
-
-    ExpressionNode(const std::string& d): data(d), left(nullptr), right(nullptr) {}
+struct Node {
+    string value;
+    Node* left;
+    Node* right;
 };
+
+Node* constructExpressionTree(const vector<string>& tokens); //when passed in a vector command, it creates a tree accordingly, returns the node of the root
+int evaluateExpressionTree(Node* root); //when passed in  a tree, it performs the operations, returns the int value.
+int execute(const vector<string>& tokens);
+
 
 #endif //PROJECT8_EXPRESSIONTREE_H
