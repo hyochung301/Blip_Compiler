@@ -100,66 +100,49 @@ void processPurchase() {
     readString(str_customer);
     readString(str_item);
     readNum(numholder);
-
-    if(*selectInventItem(str_item) < numholder){//database[str_customer].name.c_str()
-        printf("Sorry %s, we only have %d %s\n", str_customer.c_str(), *selectInventItem(str_item), str_item.c_str());
-        return;
+    if (numholder > 0) {
+        if (*selectInventItem(str_item) < numholder) {//database[str_customer].name.c_str()
+            printf("Sorry %s, we only have %d %s\n", str_customer.c_str(), *selectInventItem(str_item),
+                   str_item.c_str());
+        } else {
+            Customer cust = database[str_customer];
+            int* items = selectInventItem(str_item, cust);
+            *items += numholder;
+            database[str_customer] = cust;
+            //*selectInventItem(str_item, database[str_customer]) += numholder; //add purchased num to customer db
+            *selectInventItem(str_item) -= numholder; //subtract from the inventory
+        }
     }
-    *selectInventItem(str_item, database[str_customer]) += numholder; //add purchased num to customer db
-    *selectInventItem(str_item) -= numholder; //subtract from the inventory
 }
 
 void processSummarize() {
-    printf("There are %d Bottles %d Diapers and %d Rattles in inventory\n", *selectInventItem("Bottles"), *selectInventItem("Diapers"), *selectInventItem("Rattles"));
+    printf("There are %d Bottles %d Diapers and %d Rattles in inventory\n", num_bottles, num_diapers, num_rattles);
     printf("we have had a total of %d different customers\n",database.size());
 
-    int idx,i, max;
-    //bottles
-    idx = max = i = 0; //index for max
-    while (idx < database.size()){
-        if (database[idx].bottles > max){
-            i = idx;
-            max = database[i].bottles;
-        }
-        idx++;
-    }
-    if (max == 0){
+    Customer* max_bot = findMax("Bottles");
+    if (max_bot == 0){
         printf("no one has purchased any Bottles\n");
     }
-    else if (max != 0){
-        printf("%s has purchased the most Bottles (%d)\n", database[i].name.c_str(), max);
+    else if (max_bot != 0){
+        printf("%s has purchased the most Bottles (%d)\n", max_bot->name.c_str(), max_bot->bottles);
     }
 
     //diapers
-    idx = max = i = 0; //index for max
-    while (idx < database.size()){
-        if (database[idx].diapers > max){
-            i = idx;
-            max = database[i].diapers;
-        }
-        idx++;
-    }
-    if (max == 0){
+    Customer* max_dia = findMax("Diapers");
+    if (max_bot == 0){
         printf("no one has purchased any Diapers\n");
     }
-    else if (max != 0){
-        printf("%s has purchased the most Diapers (%d)\n", database[i].name.c_str(), max);
+    else if (max_bot != 0){
+        printf("%s has purchased the most Diapers (%d)\n", max_dia->name.c_str(), max_dia->diapers);
     }
 
     //Rattles
-    idx = max = i = 0; //index for max
-    while (idx < database.size()){
-        if (database[idx].rattles > max){
-            i = idx;
-            max = database[i].rattles;
-        }
-        idx++;
-    }
-    if (max == 0){
+    Customer* max_rat = findMax("Rattles");
+    if (max_rat == 0){
         printf("no one has purchased any Rattles\n");
     }
-    else if (max != 0){
-        printf("%s has purchased the most Rattles (%d)\n",database[i].name.c_str(), max);
+    else if (max_rat != 0){
+        printf("%s has purchased the most Rattles (%d)\n", max_rat->name.c_str(), max_rat->rattles);
     }
 
 }
