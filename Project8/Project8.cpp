@@ -41,20 +41,29 @@ void displayText(){//
 
 }
 void initVAR(){
+    //cout << next_token() << endl;
     read_next_token();
-    getCommand();
-    //if already exits, generate a warning "varaible <varName> incorrectly re-initialized"
+    //cout << next_token() << endl;
     string symbol = tokenReader(next_token());
+
+    getCommand();
+    //cout << next_token() << endl;
+
+    //if already exits, generate a warning "varaible <varName> incorrectly re-initialized"
     if (symbo.count(symbol) == 1){cout<< "variable" << symbol << "incorrectly re-initialized" << endl;} //if previously declared, warning.
     symbo[symbol] = execute(command, symbo);    // set Var to change the variable
 
 }
 
 void setVAR(){
+    //cout << next_token() << endl;
     read_next_token();
-    getCommand();
-    //if it does not exits warn "varaible <varName> not declared".
+    //cout << next_token() << endl;
     string symbol = tokenReader(next_token());
+
+    getCommand();
+    //cout << next_token() << endl;
+    //if it does not exits warn "varaible <varName> not declared".
     if (symbo.count(symbol) != 1){cout<< "variable" << symbol << "not declared" << endl;} //if previously not declared, warning.
     symbo[symbol] = execute(command, symbo);    //call init VAR to init
 
