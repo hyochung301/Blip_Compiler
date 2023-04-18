@@ -17,13 +17,13 @@ string tokenReader (const char *a) {
 }
 
 void getCommand() {
-cout<<next_token()<<endl;
+//cout<<next_token()<<endl;
     string tokenChecker = peek_next_token();
     for (; next_token_type != END && tokenChecker != "set" && tokenChecker != "output" && tokenChecker != "text" && tokenChecker != "var"; tokenChecker = peek_next_token()) {
     //for (; next_token_type != END && token != "set" && token != "output" && token != "text" && token != "var" ; read_next_token()) {
     read_next_token();
     string token = next_token();
-        cout<<token<<endl;
+        //cout<<token<<endl;
         if (token == "//"){skip_line();}
         command.push_back(next_token());
         //read_next_token();

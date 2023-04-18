@@ -42,7 +42,7 @@ Node* constructExpressionTree(vector<string>& tokens, const map<string, int>& sy
         return nullptr;
     }
 
-    string token = tokens.back();
+    string token = tokens.front();
     tokens.erase(tokens.begin());
 
     // If token is an operator, pop two operands and create a new subtree
@@ -116,9 +116,9 @@ int evaluateExpressionTree(Node* root) {
     } else if (root->value == "||") {
         return leftValue || rightValue;
     } else if (root->value == "!") {
-        return !rightValue;
+        return !leftValue;
     } else if (root->value == "~") {
-        return ~rightValue;
+        return ~leftValue;
     } else {
         throw invalid_argument("Invalid operator: " + root->value);
     }
