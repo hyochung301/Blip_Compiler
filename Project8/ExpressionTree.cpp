@@ -118,7 +118,7 @@ int evaluateExpressionTree(Node* root) {
     } else if (root->value == "!") {
         return !leftValue;
     } else if (root->value == "~") {
-        return ~leftValue;
+        return -leftValue;
     } else {
         throw invalid_argument("Invalid operator: " + root->value);
     }
