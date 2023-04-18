@@ -11,6 +11,10 @@
 #include <map>
 using namespace std;
 
+void getCommand();
+void displayText();
+void initVAR();
+void setVAR();
 void run();
 
 #endif //PROJECT8_PROJECT8_H

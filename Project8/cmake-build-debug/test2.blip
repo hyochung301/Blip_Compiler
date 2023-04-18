@@ -1,4 +1,4 @@
-output + 2 2 text " should be 4\n"
+output + 2 3 text " should be 4\n"
 output * 3 3 
 text " should be 9\n"
 output / 10 2 
