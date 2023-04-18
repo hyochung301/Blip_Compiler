@@ -76,7 +76,8 @@ void run(){
 //            }
             //else {
                 getCommand();
-                cout << execute(command, symbo) << endl;
+                int j = execute(command, symbo);
+                cout <<  j << endl;
             //}
         }
         else if (token == "var"){

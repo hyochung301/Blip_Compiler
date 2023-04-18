@@ -24,49 +24,57 @@ Node* newNode(string value) {
     return node;
 }
 
-int execute(const vector<string>& command, const std::map<std::string, int>& symbolTable){
+Node* newNode(string value, Node* left, Node* right) {
+    Node* node = new Node;
+    node->value = value;
+    node->left = left;
+    node->right = right;
+    return node;
+}
+
+int execute(vector<string>& command, const std::map<std::string, int>& symbolTable){
     return(evaluateExpressionTree(constructExpressionTree(command, symbolTable)));
 }
 
 // Function to construct a binary expression tree from an input expression
-Node* constructExpressionTree(const std::vector<std::string>& tokens, const std::map<std::string, int>& symbolTable) {
-    stack<Node*> nodeStack;
-//only number passed in,
-    for (const string& token : tokens) {
-        Node* newNode = ::newNode(token);
-
-        // If token is an operator, pop two operands and create a new subtree
-
-        if (token == "!" || token == "~") {
-            Node* operand = nodeStack.top();
-            nodeStack.pop();
-
-            newNode->left = operand;
-        }
-        else if (token == "+" || token == "-" || token == "*" || token == "/"||
-        token == "&&" || token == "||" || token == "<" || token == ">"||
-        token == "==" || token == "!=" || token == "<=" || token == ">="||
-        token == "!" || token == "~") {
-            Node *right = nodeStack.top();
-            nodeStack.pop();
-            Node *left = nodeStack.top();
-            nodeStack.pop();
-
-            newNode->left = left;
-            newNode->right = right;
-        }
-        else {
-            // If token is a variable, look it up in the symbol table and replace it with its value
-            if (symbolTable.find(token) != symbolTable.end()) {
-                newNode->value = std::to_string(symbolTable.at(token));
-            }
-        }
-
-        nodeStack.push(newNode);
+Node* constructExpressionTree(vector<string>& tokens, const map<string, int>& symbolTable) {
+    if (tokens.empty()) {
+        return nullptr;
     }
 
-    return nodeStack.top();
+    string token = tokens.back();
+    tokens.erase(tokens.begin());
+
+    // If token is an operator, pop two operands and create a new subtree
+
+    if (token == "!" || token == "~") {
+        Node *left = constructExpressionTree(tokens, symbolTable);
+
+        return newNode(token, left, nullptr);
+    }
+
+    else if (token == "+" || token == "-" || token == "*" || token == "/"||
+    token == "&&" || token == "||" || token == "<" || token == ">"||
+    token == "==" || token == "!=" || token == "<=" || token == ">="||
+    token == "!" || token == "~") {
+        Node *left = constructExpressionTree(tokens, symbolTable);
+
+        Node *right = constructExpressionTree(tokens, symbolTable);
+
+        return newNode(token, left, right);
+    }
+    else {
+        // If token is a variable, look it up in the symbol table and replace it with its value
+        if (symbolTable.find(token) != symbolTable.end()) {
+            return newNode(to_string(symbolTable.at(token)));
+        }
+        else{//just one integer came in.
+            return newNode(token);
+
+        }
+    }
 }
+
 
 // Function to evaluate the binary expression tree
 int evaluateExpressionTree(Node* root) {
