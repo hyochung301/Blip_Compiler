@@ -35,3 +35,12 @@ examples of legal set expressions
 ```
 set x 42 set x + x 1
 ```
+
+# Usage
+To execute the compiler, use set_input() command with .blip file, and execute it with run() command.
+The following is the example usage of the compiler. 
+
+```
+set_input("test_grader.blip");
+run();
+```
