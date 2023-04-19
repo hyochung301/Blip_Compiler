@@ -1,3 +1,5 @@
+# .Blip Compiler
+
 A compiler built with C++
 The compiler can parse a text file, read in commands, and execute the Blip program in polish notation (using recursion and binary tree).
 Commands implemented included variable assignments, arithmetic operations, conditionals, and loops.
