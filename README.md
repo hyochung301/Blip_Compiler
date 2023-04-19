@@ -11,6 +11,6 @@ Spring 2023 ECE 312 C and C++ (Code developed for EE 312 course at UT Austin)
 - Lab 5 - Set ADT Project
 - Lab 6 - Maze Recursion Project (Depth First Search)
 - Lab 7 - CRM Database C++ Project
-- Lab 8 - Compiler - The compiler can parse a text file, read in commands, execute the Blip program, and provide error messages if needed
+- Lab 8 - Blip Compiler Project
 
   **Note:** These labs are from spring 2023 and may differ from other years.
