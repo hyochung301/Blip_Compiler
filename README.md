@@ -1,9 +1,6 @@
 # SW_Design_Implement_ECE312
 ECE SW class#1 
 
-
-# TM4C123GXL EE319K Labs
-
 Spring 2023 ECE 312 C and C++ (Code developed for EE 312 course at UT Austin)
 
 ## Labs
