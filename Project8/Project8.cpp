@@ -35,7 +35,7 @@ void displayText(){//
     read_next_token();
     command.push_back(next_token());
     for(int i=0; i < command.size(); i++) {
-        cout << command.at(i)<<endl ; //<< endl;
+        cout << command.at(i) ; //<< endl;
     }
 
 
@@ -50,7 +50,7 @@ void initVAR(){
     //cout << next_token() << endl;
 
     //if already exits, generate a warning "varaible <varName> incorrectly re-initialized"
-    if (symbo.count(symbol) == 1){cout<< "variable" << symbol << "incorrectly re-initialized" << endl;} //if previously declared, warning.
+    if (symbo.count(symbol) == 1){cout<< "variable " << symbol << " incorrectly re-initialized" << endl;} //if previously declared, warning.
     symbo[symbol] = execute(command, symbo);    // set Var to change the variable
 
 }
@@ -64,7 +64,7 @@ void setVAR(){
     getCommand();
     //cout << next_token() << endl;
     //if it does not exits warn "varaible <varName> not declared".
-    if (symbo.count(symbol) != 1){cout<< "variable" << symbol << "not declared" << endl;} //if previously not declared, warning.
+    if (symbo.count(symbol) != 1){cout<< "variable " << symbol << " not declared" << endl;} //if previously not declared, warning.
     symbo[symbol] = execute(command, symbo);    //call init VAR to init
 
 
@@ -85,8 +85,7 @@ void run(){
 //            }
             //else {
                 getCommand();
-                int j = execute(command, symbo);
-                cout <<  j << endl;
+                cout << execute(command, symbo);
             //}
         }
         else if (token == "var"){
@@ -95,6 +94,8 @@ void run(){
         else if (token == "set"){
             setVAR();
         }
+        else if (token == "//"){skip_line();}
         command.clear();
     }
+    symbo.clear();
 }

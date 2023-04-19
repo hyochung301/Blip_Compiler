@@ -56,7 +56,7 @@ Node* constructExpressionTree(vector<string>& tokens, const map<string, int>& sy
     else if (token == "+" || token == "-" || token == "*" || token == "/"||
     token == "&&" || token == "||" || token == "<" || token == ">"||
     token == "==" || token == "!=" || token == "<=" || token == ">="||
-    token == "!" || token == "~") {
+    token == "!" || token == "~"|| token == "%") {
         Node *left = constructExpressionTree(tokens, symbolTable);
 
         Node *right = constructExpressionTree(tokens, symbolTable);
@@ -79,7 +79,7 @@ Node* constructExpressionTree(vector<string>& tokens, const map<string, int>& sy
 // Function to evaluate the binary expression tree
 int evaluateExpressionTree(Node* root) {
     if (!root) {
-        return 0;
+        return NULL;
     }
 
     if (!root->left && !root->right) {
