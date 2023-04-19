@@ -18,6 +18,5 @@ int main(){
 //    cout << endl << endl<< "extra_test8" << endl; set_input("extra_test8.blip"); run();
 //    cout << endl << endl<< "extra_test9" << endl; set_input("extra_test9.blip"); run();
 
-    //set_input("test_grader.blip");    run();
-    return 0;
+    set_input("test_grader.blip");    run();
 }
